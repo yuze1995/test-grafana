@@ -195,5 +195,5 @@ deployment_tools_config.json
 # Temporary file for backporting PRs
 .pr-body.txt
 
-**/grafana_data
-**/prometheus_data
+# **/grafana_data
+# **/prometheus_data

@@ -1,0 +1,17 @@
+{
+	"ulid": "01HAKBZQGYB75M7C2E40CXREFC",
+	"minTime": 1695000882429,
+	"maxTime": 1695002400000,
+	"stats": {
+		"numSamples": 138276,
+		"numSeries": 456,
+		"numChunks": 912
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01HAKBZQGYB75M7C2E40CXREFC"
+		]
+	},
+	"version": 1
+}

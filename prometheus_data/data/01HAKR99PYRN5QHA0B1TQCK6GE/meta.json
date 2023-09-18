@@ -1,0 +1,17 @@
+{
+	"ulid": "01HAKR99PYRN5QHA0B1TQCK6GE",
+	"minTime": 1695016801102,
+	"maxTime": 1695024000000,
+	"stats": {
+		"numSamples": 376838,
+		"numSeries": 552,
+		"numChunks": 3017
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01HAKR99PYRN5QHA0B1TQCK6GE"
+		]
+	},
+	"version": 1
+}
