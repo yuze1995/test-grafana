@@ -1,0 +1,80 @@
+version: '3.8'
+services:
+  nginx-1:
+    build: ./nginx/
+    container_name: nginx-1
+    ports:
+      - 8080:8080
+
+  nginx-2:
+    build: ./nginx/
+    container_name: nginx-2
+    ports:
+      - 8081:8080
+
+  nginx-3:
+    build: ./nginx/
+    container_name: nginx-3
+    ports:
+      - 8082:8080
+
+  nginx-prometheus-exporter-1:
+    image: nginx/nginx-prometheus-exporter:0.11
+    container_name: nginx-prometheus-exporter-1
+    command: -nginx.scrape-uri http://nginx-1:8080/stub_status
+    ports:
+      - 9113:9113
+    depends_on:
+      - nginx-1
+      
+  nginx-prometheus-exporter-2:
+    image: nginx/nginx-prometheus-exporter:0.11
+    container_name: nginx-prometheus-exporter-2
+    command: -nginx.scrape-uri http://nginx-2:8080/stub_status
+    ports:
+      - 9114:9113
+    depends_on:
+      - nginx-2
+
+  nginx-prometheus-exporter-3:
+    image: nginx/nginx-prometheus-exporter:0.11
+    container_name: nginx-prometheus-exporter-3
+    command: -nginx.scrape-uri http://nginx-3:8080/stub_status
+    ports:
+      - 9115:9113
+    depends_on:
+      - nginx-3
+
+  prometheus:
+    image: prom/prometheus:v2.37.9
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - ./prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+    ports:
+      - '9090:9090'
+
+  # renderer:
+  #   image: grafana/grafana-image-renderer:3.4.2
+  #   environment:
+  #     BROWSER_TZ: Asia/Taipei
+  #   ports:
+  #     - '8081:8081'
+
+  grafana:
+    image: grafana/grafana:9.5.8
+    container_name: grafana
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: pass
+      # GF_RENDERING_SERVER_URL: http://renderer:8081/render
+      # GF_RENDERING_CALLBACK_URL: http://grafana:3000/
+      # GF_LOG_FILTERS: rendering:debug
+    depends_on:
+      - prometheus
+      # - renderer
+    ports:
+      - '3000:3000'
